@@ -51,20 +51,41 @@ A production-ready Retrieval-Augmented Generation (RAG) system for technical doc
 
 ## 🗂 Project Structure
 
+### Project Structure
 
-api/                – FastAPI app, routes, schemas
-celery_tasks/       – Ingestion & pipeline Celery tasks
-llm/                – Embedding & LLM client logic (prompt builder, OpenAI/Lambda calls)
-storage/
-  ├─ db/            – PostgreSQL models & data access
-  └─ vector/        – Qdrant vector‐store logic
-io/                 – GCS, local file & other I/O helpers
-parsing/            – OCR result parsing & chunking logic
-services/           – High-level ingestion, retrieval & search services
-utils/              – Config, logging, batching, error handling utilities
-embedding_service/  – Minimal FastAPI app for internal text embedding
-static/             – UI assets
-tests/              – Unit & integration tests
+- **`api/`**  
+  FastAPI application, routes & schemas
+
+- **`celery_tasks/`**  
+  Document ingestion & pipeline Celery tasks
+
+- **`llm/`**  
+  Embedding & LLM client logic (prompt builder, OpenAI/Lambda calls)
+
+- **`storage/`**  
+  - **`db/`** — PostgreSQL models & data access  
+  - **`vector/`** — Qdrant vector‐store logic
+
+- **`io/`**  
+  GCS, local file & other I/O helpers
+
+- **`parsing/`**  
+  OCR parsing & chunking logic
+
+- **`services/`**  
+  High-level ingestion, retrieval & search services
+
+- **`utils/`**  
+  Config, logging, batching & error-handling utilities
+
+- **`embedding_service/`**  
+  Minimal FastAPI service for internal text embedding
+
+- **`static/`**  
+  UI assets (e.g. `mac-ui.css`)
+
+- **`tests/`**  
+  Unit & integration tests
 
 
 ---
