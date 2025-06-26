@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Ask Your Data</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link rel="stylesheet" href="/static/mac-ui.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css/github-markdown.min.css">
+</head>
+<body>
+<main>
+    <h1>
+      <svg height="24" width="24" viewBox="0 0 24 24" style="vertical-align:middle;margin-right:0.4em;opacity:0.95">
+        <ellipse cx="8" cy="8" rx="4" ry="4" fill="#007aff"/><ellipse cx="16" cy="16" rx="6" ry="6" fill="#bbb"/>
+      </svg>
+      Ask Your Data
+    </h1>
+    <form id="qa-form" class="question-form" autocomplete="off" action="javascript:void(0);">
+        <input class="prompt-input" name="prompt" id="prompt" type="text" placeholder="Type your technical question..." required autofocus>
+        <button type="submit" class="ask-btn" id="submit-btn">Ask</button>
+    </form>
+    <div id="loading" class="loading">Thinking...</div>
+    <div id="answer-block" class="answer-block">
+        <div id="answer" class="markdown-body"></div>
+        <div id="references" class="refs"></div>
+    </div>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script>
+const form = document.getElementById('qa-form');
+const promptInput = document.getElementById('prompt');
+const answerBlock = document.getElementById('answer-block');
+const answerDiv = document.getElementById('answer');
+const refsDiv = document.getElementById('references');
+const loadingDiv = document.getElementById('loading');
+const submitBtn = document.getElementById('submit-btn');
+let eventSource = null;
+
+form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    answerBlock.style.display = "none";
+    answerDiv.innerHTML = "";
+    refsDiv.innerHTML = "";
+    loadingDiv.style.display = "block";
+    loadingDiv.textContent = "Streaming answer...";
+    submitBtn.disabled = true;
+    if (eventSource) { eventSource.close(); }
+
+    const prompt = encodeURIComponent(promptInput.value);
+    eventSource = new EventSource(`/infer_stream?prompt=${prompt}`);
+    let answerText = "";
+    eventSource.onmessage = (event) => {
+        const data = JSON.parse(event.data);
+        if (data.answer) {
+            answerText = data.answer;
+            answerDiv.innerHTML = marked.parse(answerText);
+        }
+        if (data.references && data.references.length) {
+            refsDiv.innerHTML = "<b>References:</b><ul>" +
+                data.references.map(r => `<li>${r}</li>`).join("") +
+                "</ul>";
+        }
+        
+        answerBlock.style.display = "block";
+    };
+    eventSource.onerror = () => {
+        loadingDiv.style.display = "none";
+        submitBtn.disabled = false;
+        if (eventSource) eventSource.close();
+    };
+    eventSource.onopen = () => {
+        loadingDiv.style.display = "block";
+    };
+});
+</script>
+</body>
+</html>

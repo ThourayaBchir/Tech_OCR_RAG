@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login - Ask Your Data</title>
+    <link rel="stylesheet" href="/static/mac-ui.css">
+    <link rel="stylesheet" href="/static/login-mac.css">
+</head>
+<body>
+<main>
+    <h2>Sign In</h2>
+    {% if error %}
+      <div class="error-message">{{ error }}</div>
+    {% endif %}
+    <form method="post" action="/login" autocomplete="on">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+        <label>
+            Username
+            <input type="text" name="username" required autofocus autocomplete="username">
+        </label>
+        <label>
+            Password
+            <input type="password" name="password" required autocomplete="current-password">
+        </label>
+        <button type="submit">Login</button>
+    </form>
+</main>
+</body>
+</html>

@@ -1,0 +1,33 @@
+[project]
+name = "AstraMind"
+version = "0.1.0"
+description = "Production-grade RAG pipeline"
+authors = [{ name = "TB", email = "tbchir@email.com" }]
+requires-python = ">=3.11"
+
+
+
+dependencies = [
+    "fastapi",
+    "uvicorn",
+    "celery",
+    "redis[async]",
+    "sqlalchemy",
+    "psycopg2-binary",
+    "qdrant-client",
+    "openai",
+    "python-dotenv",
+    "pydantic",
+    "black",
+    "google-cloud-storage", 
+    "google-cloud-documentai",
+    "watchdog",
+    "alembic",
+    "qdrant-client[fastembed]",
+    "jinja2",
+    "python-multipart",
+    "isort",
+    "passlib[bcrypt]",
+    "itsdangerous",
+    "slowapi",
+]
