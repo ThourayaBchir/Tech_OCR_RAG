@@ -52,19 +52,19 @@ A production-ready Retrieval-Augmented Generation (RAG) system for technical doc
 ## 🗂 Project Structure
 
 
-api/ # FastAPI app, routes, schemas
-celery_tasks/ # Ingestion, pipeline tasks
-llm/ # Embedding/LLM API logic (prompt builder, lambda/openai, etc)
+api/                – FastAPI app, routes, schemas
+celery_tasks/       – Ingestion & pipeline Celery tasks
+llm/                – Embedding & LLM client logic (prompt builder, OpenAI/Lambda calls)
 storage/
-db/ # PostgreSQL access
-vector/ # Qdrant vector store logic
-io/ # GCS, local file, and other IO
-parsing/ # OCR parsing, chunking logic
-services/ # Ingestion, search, and retrieval services
-utils/ # Config, logging, batching, error handling
-embedding_service/ # Standalone minimal FastAPI app for text embedding
-static/ # UI CSS (e.g., mac-ui.css)
-tests/ # Unit/integration tests
+  ├─ db/            – PostgreSQL models & data access
+  └─ vector/        – Qdrant vector‐store logic
+io/                 – GCS, local file & other I/O helpers
+parsing/            – OCR result parsing & chunking logic
+services/           – High-level ingestion, retrieval & search services
+utils/              – Config, logging, batching, error handling utilities
+embedding_service/  – Minimal FastAPI app for internal text embedding
+static/             – UI assets
+tests/              – Unit & integration tests
 
 
 ---
@@ -89,7 +89,7 @@ docker run --rm -v $(pwd)/model-cache:/workspace python:3.11 \
 
 ### 3. Build and Launch All Services
 ```bash
-docker-compose up --build
+docker-compose up -d
 ```
 This starts:
 
@@ -98,7 +98,7 @@ This starts:
 - Qdrant, Postgres, Redis
 - Internal embedding service (on port 9000)
 
-UI available at http://localhost:8000/infer (or your chosen domain)
+UI available at http://localhost:8000/infer
 
 ### 4. Add Documents
 Upload your PDFs/images to your GCS bucket (or local ingest folder).
@@ -112,14 +112,13 @@ Answers are streamed with clickable, page-specific citations.
 
 
 
-### 6.Some Details
+### 6. Some Details
 
 Minimal dependencies in the embedding service: fastembed, fastapi, uvicorn.
 
 Persistent storage for model cache, DB, and vector data is volume-mounted for easy migration and backup.
 
 Signed URLs are used for all source document links when using GCS.
-
 
 ### License
 MIT
