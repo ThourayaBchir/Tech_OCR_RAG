@@ -11,6 +11,8 @@ A production-ready Retrieval-Augmented Generation (RAG) system for technical doc
 
 ---
 
+<img src="screenshot.png" alt="Logo" style="width:70%; height:auto;" />
+
 ## 🏗️ Core Logic Overview
 
 1. **Document Ingestion (Celery Worker)**  
